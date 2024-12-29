@@ -1,0 +1,19 @@
+name: cv
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.12.3
+  - numpy
+  - pandas
+  - matplotlib
+  - seaborn
+  - scikit-learn
+  - scipy
+  - pillow
+  - opencv
+  - pip
+  - pip:
+    - imageio
+    - tqdm
+    - jupyter
