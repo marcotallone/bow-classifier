@@ -1,0 +1,17 @@
+\documentclass[../main.tex]{subfiles}
+\graphicspath{{\subfix{../images/}}} % Images path
+
+\begin{document}
+
+\section{Introduction}
+
+The Bag of Visual Words (BoW) model is a popular computer vision technique used for image classification or retrieval. It is based on the idea of treating images as documents and representing them as normaized histograms of visual words belonging to a visual vocabulary, which is obtained by clustering local features extracted from a set of images.\\
+The objective of this project is to implement a BoW image classifier for scene recognition by first building a visual vocabulary from a set of test images and then performing multi-class classification using K-Nearest Neighbors (KNN) and Support Vector Machines (SVM) classifiers.\\
+In particular, the visual vocabulary is built by clustering SIFT descriptors extracted from the test images using the K-Means algorithm. Descriptors have been computed both from keypoints detected wit the the SIFT algorithm and from dense sampling of the images with a fixed grid to compare the two approaches.\\
+In the classification phase instead, the performance of a simple KNN classifier is compared with that of different SVM classifiers all adopting the ``\itt{one-vs-all}'' strategy for multi-class classification. The SVM classifiers differ in the kernel used and in the kind of input features they are trained on.\\
+Additionally, the use of a spatial pyramid matching for natural scene recognition proposed by \itt{Lazebnik et al.} [TODO:add reference] is also tested. This technique is used to add spatial information to the classic BoW approach in an attempt to improve the classification performance.\\
+The following sections are organized as follows. Section~\ref{sec:dataset-description} presents the dataset used for the experiments and analyzes the images distribution. Section~\ref{sec:visual-vocabulary-construction} explains the process of building the visual vocabulary from the descriptors computed on the test images. Section~\ref{sec:image-representation} shows how images can be represented as normalized histograms of visual words. In section~\ref{sec:classification} different classifiers are compared for the multi-class classification task while section~\ref{sec:spatial-pyramid-matching} presents the spatial pyramid matching technique and its application to the BoW model. Finally, section~\ref{sec:conclusions} summarizes the resultsof this study together with some final considerations.\\
+With the aim of maintaining a clear and concise report of the work, the following sections will only present the most noticeable results of the study, while further analysis and the detailed model implementations will be available on the author’s GitHub repository [TODO:add reference].
+
+
+\end{document}

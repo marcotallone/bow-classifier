@@ -1,0 +1,70 @@
+\documentclass[../main.tex]{subfiles}
+\graphicspath{{\subfix{../images/}}} % Images path
+
+\begin{document}
+
+\section{Results}\label{sec:results}
+
+The results obtained with all the classifiers, the two feature extraction methods and the different image representations are summarized in Table~\ref{tab:results}.
+The average accuracy over all the classes has been used as the main assessment metric for all the models. However, confusion matrices have also been computed\footnote{Only for the \itt{dense grid} sampling method and the normalized histogram representation for conistency reasons as explained in Appendix~\ref{app:confusion-matrices}.} in order to better understand which classes are more difficult to classify and these are reported in Appendix~\ref{app:confusion-matrices}.\\
+All the expreimental results have been obtained by running the models on a machine equipped with an Intel\textsuperscript{\textregistered}~Core\textsuperscript{TM}~i7--8565U CPU @ $\SI{4.60}{\giga\hertz}$ and $\SI{8}{\giga\byte}$ of RAM.\\
+First of all a dummy classifier, that always predict the most frequent class (\itt{Open Country}) on the test set, has been used as baseline for comparison for all the other models. The average accuracy obtained on the test set is $\SI{10.39}{\percent}$, and is of course independed from the input feature representation.\\
+The KNN classifiers achieved their best results using the normalized histograms representation and the dense grid feature sampling both in the case of single and multiple neighbors. However, the best accuracies obtained do not exceed $\SI{32.36}{\percent}$ for the single neighbor case and $\SI{38.76}{\percent}$ for the multiple neighbors case (obtained with $k = 20$). The results are surely better than the baseline classifier but still far from being satisfactory as a lot of confusion between classes is present as highlighted by the relative confusion matrices in figures~\ref{fig:confusion-matrix-1nn} and~\ref{fig:confusion-matrix-knn}.\\
+The results collected with the SVM classifiers have instead been more promising. 
+In this case the best performances have been obtained from the features extracted by the SIFT detector. The SVMs trained with the default RBF kernel achieved a top accuracy of $\SI{50.89}{\percent}$, while the ones using the $\chi^2$ kernel reached $\SI{51.49}{\percent}$. Hence, a marginal improvement has been obtained by using the specialized kernel, but the results are still comparable. From the confusion matrices shown in~\ref{fig:confusion-matrix-rbf} and~\ref{fig:confusion-matrix-chi2} a noticeable (but understandable) confusion arises between the \itt{Open Country} and \itt{Forest} classes. The \itt{Living Room}, \itt{Bedroom} and \itt{Kitchen} classes are also often misclassified among each other. The \itt{Industrial} class, instead, is the one with the lowest overall accuracy.\\
+By a large margin, the best accuracy has been obtained by the SVM classifiers using the spatial pyramid matching kernel. In this case, by sampling features from a regular grid and adopting the extended weighted histogram representation for the images, an accuracy of $\SI{75.54}{\percent}$ has been achieved. This result is significantly better than the other classifiers and is a clear indication that the spatial information is crucial for the scene recognition task. The superiority of this approach is also confirmed by the almost completely diagonal confusion matrix (Figure~\ref{fig:confusion-matrix-pmk}), in which only a few misclassifications are present, mainly between the \itt{Living Room} and \itt{Bedroom} classes. Although higher than the other classifiers, the lowest accuracy is still measured for the \itt{Industrial} class.\\
+Finally, from Table~\ref{tab:results} we can also notice that, when the SIFT detector has been adopted as feature extraction method, the performances of the classifiers when using either the normalized histogram or the TF-IDF representation for the input features are very similar. Instead, this has not been the case when the dense grid sampling has been used. In this case, the classifiers have achieved better results using the normalized histograms representation and significantly lower accuracies have been measured when the TF-IDF weighting scheme has been applied. However, such result is not completely unexpected and might be explained by the fact that grid sampling doesn't necessarily guarantee to extract characteristic and significative features from the images as the SIFT detector does. For this reason, the TF-IDF weighting scheme might fail in properly enhancing the importance of the most discriminative visual words in each image.\\
+% NO: This happens expecially with grid keypoints located in uniform regions of the images, such as the sky or sea areas, which might be useful in discriminating between classes as easly stated, but are present in many images and hence weighted less by the TF-IDF scheme.\\
+
+\begin{table}[htb]
+  \renewcommand{\arraystretch}{1.5} % Row height
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+
+    % Header (different color)
+    \hline
+    \multirow{2}{*}{\textbf{Classifier}} &
+    \multirow{2}{*}{\textbf{Feature Sampling}} &
+    \multicolumn{2}{c|}{\textbf{Image Representation}} \\
+    \cline{3-4}
+    & & \itt{Histogram} & \itt{TF-IDF} \\
+
+    % Rows
+    \hline
+    \multirow{2}{*}{Dummy Classifier} & 
+    \itt{SIFT detector} & \SI{10.39}{\percent} & \SI{10.39}{\percent} \\
+    \cline{2-4}
+    & \itt{Dense grid} & \SI{10.39}{\percent} & \SI{10.39}{\percent} \\
+    \hline
+    \multirow{2}{*}{1-NN} &
+    \itt{SIFT detector} & \SI{31.49}{\percent} & \SI{31.83}{\percent} \\
+    \cline{2-4}
+    & \itt{Dense grid} & \SI{32.36}{\percent} & \SI{23.48}{\percent} \\
+    \hline
+    \multirow{2}{*}{k-NN} &
+    \itt{SIFT detector} & \SI{37.19}{\percent} & \SI{36.42}{\percent} \\
+    \cline{2-4}
+    & \itt{Dense grid} & \SI{38.76}{\percent} & \SI{28.31}{\percent} \\
+    \hline
+    \multirow{2}{*}{SVM (RBF)} &
+    \itt{SIFT detector} & \SI{50.65}{\percent} & \SI{50.89}{\percent} \\
+    \cline{2-4}
+    & \itt{Dense grid} & \SI{50.08}{\percent} & \SI{42.01}{\percent} \\
+    \hline
+    \multirow{2}{*}{SVM ($\chi^2$)} &
+    \itt{SIFT detector} & \SI{51.49}{\percent} & \SI{50.95}{\percent} \\
+    \cline{2-4}
+    & \itt{Dense grid} & \SI{50.12}{\percent} & \SI{42.81}{\percent} \\
+    \hline
+    \itt{SVM (Pyramid Matching Kernel)} & \itt{Dense grid} & \multicolumn{2}{c|}{\SI{75.54}{\percent}} \\
+    \hline
+
+  \end{tabular}
+  \caption{Average accuracies for all the implemented classifiers comparing feature extraction methods and image representations. Notice that the final result for the SVM with the pyramid matching kernel has been obtain by adopting the extended weighted histogram representation as presented in Section~\ref{subsec:spatial-pyramid}.}\label{tab:results}
+  \renewcommand{\arraystretch}{1} % Reset row height to default
+\end{table}
+
+
+
+\end{document}
+

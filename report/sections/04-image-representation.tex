@@ -1,0 +1,20 @@
+\documentclass[../main.tex]{subfiles}
+\graphicspath{{\subfix{../images/}}} % Images path
+
+\begin{document}
+
+\section{Image Representation}\label{sec:image-representation}
+
+A important step in the Bag of Visual Words (BoW) pipeline is the representation of images as normalized histograms of visual words.\\
+In this phase, the SIFT descriptors previously extracted from the images are assigned to the visual words in the vocabulary by means of a clustering algorithm. Then, for each image in the dataset, a histogram is built by counting the occurrences of each visual word in the given image.\\
+The result is a fixed-length representation in which images are seen as normalized histograms having $k$ bins, each corresponding to a visual word in the vocabulary. Such representation is used as input to the classifiers in section \ref{sec:classification} for the scene recognition task.\\
+Additionally, in order to account for the relevance of the visual words, the \itt{term frequency-inverse document frequency (TF-IDF)} weighting scheme has also been implemented and compared. In this second case, the elements of the histograms representation have been computed as:
+
+\begin{equation}
+    t_i = \frac{n_{id}}{n_{d}} \cdot \log\left(\frac{N}{N_i}\right)
+\end{equation}
+
+where $n_{id}$ is the number of occurrences of the $i$-th visual word in image $d$, $n_{d}$ is the total number of visual words in image $d$, $N$ is the total number of images in the dataset, and $N_i$ is the number of images containing the $i$-th visual word.\\
+
+\end{document}
+

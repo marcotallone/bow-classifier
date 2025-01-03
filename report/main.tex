@@ -1,0 +1,71 @@
+\documentclass{settings/notex}
+
+% PREAMBLE ─────────────────────────────────────────────────────────────────────
+
+% Images path
+\graphicspath{{images/}}
+
+% Additional packages here
+\usepackage{blindtext}
+\usepackage{siunitx}
+
+% Subfiles package (best loaded last in the preamble)
+\usepackage{subfiles}
+
+% TITLE, AUTHOR AND DATE ───────────────────────────────────────────────────────
+
+% Title, Author and Date
+\title{
+  Bag of Visual Words Classifier\\
+  \vspace{0.35cm}
+  \fontsize{12pt}{12pt}\selectfont{
+    Computer Vision and Pattern Recognition Exam\\
+    \vspace{0.25cm}
+    University of Trieste (UniTS)
+  }
+}
+
+\author{Marco Tallone}
+\date{January 2025}
+
+% DOCUMENT ─────────────────────────────────────────────────────────────────────
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+This report presents the implementation of a Bag of Visual Words (BoW) image classifier.
+The objective is to build a classifier for scene recognition by building a visual vocabulary from a set of images, representing them as normalized histograms of visual words, and performing multi-class classification.
+The visual vocabuilary is built by clustering SIFT descriptors extracted from the images, and the classification is performed comparing K-Nearest Neighbors (KNN) and Support Vector Machines (SVM) classifiers.
+Different kernels have been tested for the SVM classifier, including radial basis function (RBF), $\chi^2$ kernel and pyramid match kernel.
+Results show that the best performance is achieved by the SVM classifiers, in particular when implemented with a spatial pyramid feature representation to add spatial information to the classic BoW approach.
+\end{abstract}
+
+% \tableofcontents
+
+% Sections
+\subfile{sections/01-introduction}
+\subfile{sections/02-dataset-description}
+\subfile{sections/03-visual-vocabulary-construction}
+\subfile{sections/04-image-representation}
+\subfile{sections/05-classification}
+\subfile{sections/06-results}
+\subfile{sections/07-conclusions}
+
+% Bibliography
+% Remember to compile with the sequence:
+% lualatex -> bibtex -> lualatex -> lualatex
+% \pagebreak
+% \bibliographystyle{plainurl}
+% \bibliography{bibliography}
+
+% Appendix
+\pagebreak
+\appendix
+\renewcommand{\thesection}{\Alph{section}} % Section numbering to A, B, C, ...
+\renewcommand{\thesubsection}{\thesection\arabic{subsection}} % Subsection numbering to A1, A2, ...
+\subfile{sections/appendix}
+
+\end{document}
