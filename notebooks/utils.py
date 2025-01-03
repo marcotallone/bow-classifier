@@ -192,7 +192,7 @@ def get_tfidf(images, sift, kmeans, k, grid=False, spacing=8):
   
 		#Loop over words
 		for i in range(k):
-			tfidf_image[i] = (n[d, i] / w[d]) * np.log(D / N[i])
+			tfidf_image[i] = (n[d, i] / (w[d] + 1e-6)) * np.log(D / (N[i] + 1e-6))
    
 		tfidf.append(tfidf_image)		
 
