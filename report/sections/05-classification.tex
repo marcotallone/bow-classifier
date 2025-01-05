@@ -5,68 +5,45 @@
 
 \section{Classification}\label{sec:classification}
 
-In order to perform the scene recognition task, two main classes of classifiers have been implemented: K-Nearest Neighbors (KNN) and Support Vector Machines (SVM). This section describes these classifiers while the results are presented in the next section~\ref{sec:results}.\\
-% The dummy classifier, which always predicts the most frequent class, has been used as a baseline of comparison for all models. Its accuracy on the test set has been measured to be $\SI{10.39}{\percent}$.
+In order to perform the scene recognition task, two main classes of classifiers have been implemented: K-Nearest Neighbors (KNN) and Support Vector Machines (SVM). 
 
 \subsection{K-Nearest Neighbors (KNN)}\label{subsec:knn}
 
-A K-Nearest Neighbors classifier taking as input features the normalized histograms of visual words has been implemented. The classifier assigns to each image in the test set the label of the majority class among its $k$\footnote{Notice in this context $k$ is a hyperparameter of the classifier and not to be confused with the number of clusters $K$ used to build the visual vocabulary.} nearest neighbors in the training set.\\
+A K-Nearest Neighbors classifier taking as input features the normalized
+histograms of visual words has been implemented. The classifier assigns to each
+image in the test set the label of the majority class among its $k$ nearest
+neighbors\footnote{Notice $k$ is the number of KNN neighbors, not to be confused with the number of clusters $K$.} in the training set.\\
 In the simple case of $k=1$, the label of the closest histogram in the training set is assigned to the test image. 
-% In such case the average accuracy of the classifier is $\SI{00}{\percent}$ using the normalized histograms representation, and $\SI{00}{\percent}$ using the TF-IDF weighting scheme.\\
-A slightly better result can be achieved by performing a linear search for the hyperparameter $k$ over the range $[1, 50]$ using the average accuracy as assessment metric. For each value of $k$ in the range, the accuracy of the corresponding KNN classifier is computed and stored. At the end, the value of $k$ that maximizes the accuracy is selected and the performance of that classifier is evaluated. 
-% For the normalized histograms representation, the best accuracy is $\SI{00}{\percent}$ has been obtained for $k=00$, while for the TF-IDF representation the value $k=00$ resulted in an accuracy of $\SI{00}{\percent}$.\\
+A slightly better result can be achieved by performing a linear search for the
+hyperparameter $k$ over the range $[1, 50]$ using the average accuracy as assessment metric. For each value of $k$ in the range, the accuracy of the corresponding KNN classifier is computed and stored. At the end, the value of $k$ that maximizes the accuracy is selected and the performance of the resulting classifier is evaluated. 
 
 \subsection{Support Vector Machines (SVM)}\label{subsec:svm}
 
 A series of multi-class Support Vector Machine (SVM) classifiers have been implemented
-% employed using the \texttt{scikit-learn} library implementation, which internally relies on the \texttt{libsvm} library [TODO:cite documentation and libsvm].\\
-% All classifiers have been trained 
-following the ``\textit{one-vs-all}'' strategy. For each possible class, a single binary classifier is trained and the final prediction is obtained by selecting the class with the highest confidence score. Each binary classifier is trained taking as input features either the normalized histograms or the TF-IDF weighted histograms, and modified ground truth labels where the class of interest is labeled as $+1$ and all other classes are labeled as $-1$.\\
-Different kernels for these SVM classifiers have ben tested and compared. Initially, the default radial basis function (RBF) kernel has been adopted. Subsequently, the generalized Gaussian kernel based on the $\chi^2$ distance shown in equation~\ref{eq:chi2-kernel} has been tested. 
-\begin{equation}\label{eq:chi2-kernel}
-  k(\mathbf{x}, \mathbf{x}') = \exp\left(-\gamma \sum_i \frac{(\mathbf{x}_i - \mathbf{x}'_i)^2}{\mathbf{x}_i + \mathbf{x}'_i}\right)
+following the ``\textit{one-vs-all}'' strategy. For each possible class, a
+single binary classifier is trained and the final prediction is obtained by
+selecting the class with the highest confidence score. Each binary classifier is
+trained taking as input features one of the presented image representations and
+modified ground truth labels where the class of interest is labeled as $+1$ and all other classes are labeled as $-1$.
+
+\pagebreak
+Different kernels for these SVM classifiers have been tested and compared.
+Initially, the default radial basis function (RBF) kernel has been adopted. Its
+performance has then been compared with the generalized Gaussian kernel (with
+$\gamma = \nicefrac{1}{2}$) based on
+the $\chi^2$ distance and the histogram
+intersection kernel in equation~\ref{eq:chi2-int-kernels}, both widely
+adopted in histogram comparison tasks.
+\begin{equation}\label{eq:chi2-int-kernels}
+	k_{\chi^2}(\mathbf{x}, \mathbf{x}') = \exp\left(-\gamma \sum_i \frac{({x}_i
+	- {x}'_i)^2}{{x}_i + {x}'_i}\right) 
+	\quad \quad
+	k_{\cap}(\mathbf{x}, \mathbf{x}') = \sum_i \min({x}_i, {x}'_i)
 \end{equation}
 
-This kernel, implemented with the parameter $\gamma = \frac{1}{2}$, is well known to be effective in histogram comparison tasks.\\
-Finally the \itt{spatial pyramid kernel} described in section~\ref{subsec:spatial-pyramid} has also been tested.
-% A first test has been performed using the default radial basis function (RBF) kernel, which resulted in an accuracy of $\SI{00}{\percent}$ for the normalized histograms representation, and $\SI{00}{\percent}$ for the TF-IDF representation. The confusion matrix associated to the RBF kernel is shown in figure~\ref{fig:confusion-matrix-rbf}\footnote{The confusion matrix is computed using the normalized histograms representation, but a similar one has been obtained for the TF-IDF representation.} in which it's possible to see that confusion mostly arises in the classificaton of \itt{Bedroom}, \itt{Kitchen} and \itt{Living Room} classes. The \itt{Forest} class is also often misclassified as \itt{Open Country} and an overall low accuracy has been measured for the \itt{Industrial} class.\\
-% Following this first test, a second class of SVMs has been trained adopting a generalized Gussian kernel based on the $\chi^2$ distance, which is well known to be effective in histogram comparison tasks. In this case, a slightly higher accuracy of $\SI{00}{\percent}$ has been recorded for the normalized histograms representation, and of $\SI{00}{\percent}$ for the TF-IDF representation. However, the resulting confusion matrix in figure~\ref{fig:confusion-matrix-chi2} shows a similar confusion between the classes.
-
-\subsection{Spatial Pyramid Matching}\label{subsec:spatial-pyramid}
-
-In an attempt to improve the classification performance of the SVM classifiers by adding spatial information to the classic BoW approach, a spatial pyramid feature representation has been implemented as described by \itt{Lazebnik et al.} [TODO:cite paper].\\
-The idea behind the spatial pyramid is to repeatedly subdivide each image into subsequently finer grids at different resolution levels $\ell \in \{0,\dots,L\}$, and to compute the histograms $H_{\ell}(i)$ of visual words for each $i^{th}$ grid at level $\ell$. More precisely, at level $\ell$ each image is divided into $2^{\ell}$ cells along each dimension, and the count of visual words is computed for each cell.\\
-It's important to notice that in this case the features are extracted from images by sampling SIFT descriptors from a regular grid with spacing of $8$ pixels between keypoints. Therefore, the feature extraction using the SIFT detector has not been performed in this case both to follow the same approach of the original paper and also to avoid the possibility of having empty cells\footnote{Which might happen if a given cell contains a uniform region of the image.}.\\
-All the hstograms are then weighted according to a multiplicative weighting scheme that favors features counts computed at higher (finer resolution) levels of the pyramid while penalizing those at lower levels. In particular, if $L$ is the number of levels in the pyramid, the weigths associated to the histograms at level $\ell$ are computed as:
-
-\begin{equation}
-    w_{0} = \frac{1}{2^{L}} \quad \text{and} \quad w_{\ell} = \frac{1}{2^{L-\ell+1}} \quad \text{for} \quad \ell \in \{1,\dots,L\}
-\end{equation}
-
-The resulting weighted histograms are then stacked together to form, for each image, a single extended multi-level descriptor that can be used as input to the SVM classifiers. Such descriptor, not only contains the information about the visual words, but also encodes locality information at different scales which was missing in the standard BoW approach.\\
-The SVM classifiers receiving these input feature vectors must be trained using the \itt{spatial pyramid kernel} which correctly computes the similarity between any two extended descriptors by performing a (weighted) sum of histograms intersections. Formally, given a visual vocabulary of size $K$ and two images $X$ and $Y$ represented by their extended descriptors
-% $H^{X} = \{H_{\ell. k}^{X}(i) \mid  \forall \ell \in \{0,\dots,L\}, \forall k \in \{1,\dots,K\}, \forall i \in \{1,\dots,2^{2 \ell}\}\}$ and $H^{Y} = \{H_{\ell. k}^{Y}(i) \mid  \forall \ell \in \{0,\dots,L\}, \forall k \in \{1,\dots,K\}, \forall i \in \{1,\dots,2^{2 \ell}\}\}$, 
-\begin{equation*}
-  \begin{aligned}
-    H^{X} &= \{H_{\ell. k}^{X}(i) \mid  \forall \ell \in \{0,\dots,L-1\}, \forall k \in \{0,\dots,K-1\}, \forall i \in \{0,\dots,2^{2 \ell}-1\}\} \\
-    H^{Y} &= \{H_{\ell. k}^{Y}(i) \mid  \forall \ell \in \{0,\dots,L-1\}, \forall k \in \{0,\dots,K-1\}, \forall i \in \{0,\dots,2^{2 \ell}-1\}\}
-  \end{aligned}
-\end{equation*}
-
-then the \itt{pyramid match kernel} betwen the two images is computed as
-
-\begin{equation}\label{eq:pyramid-match-kernel}
-  K^{L}(X,Y) = 
-  \sum_{\ell=0}^{L-1}
-  \sum_{k=0}^{K-1}
-  \sum_{i=0}^{2^{2 \ell}-1}
-  \min\left(H_{\ell. k}^{X}(i), H_{\ell. k}^{Y}(i)\right)
-\end{equation}
-
-Hence, the kernel in equation~\ref{eq:pyramid-match-kernel} has been used to compute the Gram matrix both for the train and test sets, and the SVM classifiers have been trained and evaluated accordingly.\\
-
-%//TODO: WRITE THE PARAMETERS I HAVE USED FOR THE PYRAMID L=2, K=400, ETC.!!!
-
+For the \itt{SPM} feature representation, the SVM classifiers only used
+the histogram intersection kernel as anticipated in the previous section and
+pyramid levels up to $L=2$.
 
 \end{document}
 

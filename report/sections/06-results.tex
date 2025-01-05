@@ -6,65 +6,310 @@
 \section{Results}\label{sec:results}
 
 The results obtained with all the classifiers, the two feature extraction methods and the different image representations are summarized in Table~\ref{tab:results}.
-The average accuracy over all the classes has been used as the main assessment metric for all the models. However, confusion matrices have also been computed\footnote{Only for the \itt{dense grid} sampling method and the normalized histogram representation for conistency reasons as explained in Appendix~\ref{app:confusion-matrices}.} in order to better understand which classes are more difficult to classify and these are reported in Appendix~\ref{app:confusion-matrices}.\\
-All the expreimental results have been obtained by running the models on a machine equipped with an Intel\textsuperscript{\textregistered}~Core\textsuperscript{TM}~i7--8565U CPU @ $\SI{4.60}{\giga\hertz}$ and $\SI{8}{\giga\byte}$ of RAM.\\
-First of all a dummy classifier, that always predict the most frequent class (\itt{Open Country}) on the test set, has been used as baseline for comparison for all the other models. The average accuracy obtained on the test set is $\SI{10.39}{\percent}$, and is of course independed from the input feature representation.\\
-The KNN classifiers achieved their best results using the normalized histograms representation and the dense grid feature sampling both in the case of single and multiple neighbors. However, the best accuracies obtained do not exceed $\SI{32.36}{\percent}$ for the single neighbor case and $\SI{38.76}{\percent}$ for the multiple neighbors case (obtained with $k = 20$). The results are surely better than the baseline classifier but still far from being satisfactory as a lot of confusion between classes is present as highlighted by the relative confusion matrices in figures~\ref{fig:confusion-matrix-1nn} and~\ref{fig:confusion-matrix-knn}.\\
-The results collected with the SVM classifiers have instead been more promising. 
-In this case the best performances have been obtained from the features extracted by the SIFT detector. The SVMs trained with the default RBF kernel achieved a top accuracy of $\SI{50.89}{\percent}$, while the ones using the $\chi^2$ kernel reached $\SI{51.49}{\percent}$. Hence, a marginal improvement has been obtained by using the specialized kernel, but the results are still comparable. From the confusion matrices shown in~\ref{fig:confusion-matrix-rbf} and~\ref{fig:confusion-matrix-chi2} a noticeable (but understandable) confusion arises between the \itt{Open Country} and \itt{Forest} classes. The \itt{Living Room}, \itt{Bedroom} and \itt{Kitchen} classes are also often misclassified among each other. The \itt{Industrial} class, instead, is the one with the lowest overall accuracy.\\
-By a large margin, the best accuracy has been obtained by the SVM classifiers using the spatial pyramid matching kernel. In this case, by sampling features from a regular grid and adopting the extended weighted histogram representation for the images, an accuracy of $\SI{75.54}{\percent}$ has been achieved. This result is significantly better than the other classifiers and is a clear indication that the spatial information is crucial for the scene recognition task. The superiority of this approach is also confirmed by the almost completely diagonal confusion matrix (Figure~\ref{fig:confusion-matrix-pmk}), in which only a few misclassifications are present, mainly between the \itt{Living Room} and \itt{Bedroom} classes. Although higher than the other classifiers, the lowest accuracy is still measured for the \itt{Industrial} class.\\
-Finally, from Table~\ref{tab:results} we can also notice that, when the SIFT detector has been adopted as feature extraction method, the performances of the classifiers when using either the normalized histogram or the TF-IDF representation for the input features are very similar. Instead, this has not been the case when the dense grid sampling has been used. In this case, the classifiers have achieved better results using the normalized histograms representation and significantly lower accuracies have been measured when the TF-IDF weighting scheme has been applied. However, such result is not completely unexpected and might be explained by the fact that grid sampling doesn't necessarily guarantee to extract characteristic and significative features from the images as the SIFT detector does. For this reason, the TF-IDF weighting scheme might fail in properly enhancing the importance of the most discriminative visual words in each image.\\
+The average accuracy over all the classes has been used as the main assessment
+metric for all the models. 
+% However, confusion matrices have also been computed\footnote{Only dense grid sampling and \itt{HIST} representation for reasons explained in Appendix~\ref{app:confusion-matrices}.} in order to better understand which classes are more difficult to classify and these are reported in Appendix~\ref{app:confusion-matrices}.\\
+All the experimental results have been obtained by running the models on a machine equipped with an Intel\textsuperscript{\textregistered}~Core\textsuperscript{TM}~i7--8565U CPU @ $\SI{4.60}{\giga\hertz}$ and $\SI{8}{\giga\byte}$ of RAM.\\
+The dummy classifier, that always predicts the most frequent class  (\itt{OpenCountry}) on the test set, has been used as baseline for comparison
+for the other models and the average accuracy it achieved is $\SI{10.39}{\percent}$.\\
+% Before analyzing the performance of the single classifiers, 
+First of all, it's possible to notice that the results obtained using grid sampling consistently surpass the ones resulting from the SIFT detector. This confirms the idea presented in \itt{Fei-Fei and Perona}~\cite{feifei} and \itt{Lazebnik et al.}~\cite{lazebnik} for which grid sampling works better for scene classification tasks, as it allows to capture uniform regions such as sky, water, or road surfaces that might be crucial in discriminating between classes.\\
+Looking at the performance of the different classifiers instead, the KNN ones
+surpassed the baseline, recording average accuracies
+between $\SI{40}{\percent}$ and $\SI{50}{\percent}$ with a small gain in
+performance given by the multiple neighbors approach over the single
+neighbor classifier.\\
+Undoubtably, much better results have been achieved by the SVM
+classifiers with accuracies ranging from $\SI{50}{\percent}$ to
+$\SI{70}{\percent}$.
+In particular, the adoption of specialized kernels significantly boosted the
+performance of the SVM classifiers, at least in the \itt{HIST} and \itt{TF-IDF}
+representations.
+Indeed, the $\SI{71.42}{\percent}$ accuracy obtained with the $\chi^2$ kernel
+and the $\SI{70.62}{\percent}$ with the intersection one are in agreement with
+the findings of \itt{Van Gemert et al.}~\cite{gemert} for the hard assignment
+case.\\
+However, from the comparison of the different image representation techniques it
+emerges that, while little to no differences are observed between the
+\itt{HIST} and \itt{TF-IDF} representations, the implementation of the soft
+assignment techniques failed in improving the classification performances as
+reported in \itt{Van Gemert et al.}~\cite{gemert}, except for some
+isolated cases. In contrast with the results of the paper, the accuracies
+measured for these representations are mostly comparable, if not worse\footnote{The worst being
+$\SI{18.22}{\percent}$ for SIFT detected features using the $\chi^2$ kernel.}, with respect
+to the ones of the hard assignment cases.\\
+A further level of assessment is also given by the confusion matrices computed
+for all the classifiers\footnote{Only for \itt{HIST} representation and grid
+	sampling method as explained in appendix~\ref{app:confusion-matrices}.} and reported in appendix~\ref{app:confusion-matrices}.
+These, not only confirm the superiority of the SVM classifiers with respect to
+the KNN ones, but also highlight the most difficult scenes to
+recognize. In detail, in most of the classifiers a noticeable
+(but understandable) confusion arises between the \itt{Open Country} and
+\itt{Coast} classes as well as among the \itt{LivingRoom}, \itt{Bedroom},
+\itt{Kitchen} and \itt{Office} classes. Consistently, the hardest scene
+to classify has been the \itt{Industrial} one, which matches with the results
+from literature.\\
+By far, the best accuracy has been obtained by the SVM classifiers
+using the spatial pyramid matching approach. In this case, the combination of  sampling features
+from a regular grid and adopting the \itt{SPM} representation for the images
+allowed to achieve an accuracy of $\SI{75.54}{\percent}$. This result is
+significantly better than the other classifiers and is a clear indication that
+the spatial information is crucial for the scene recognition task. The
+superiority of this approach is also confirmed by the almost completely diagonal
+confusion matrix (Figure~\ref{fig:confusion-matrix-pmk}), in which only few of
+the previous misclassifications remain, mainly between the \itt{Living Room} and \itt{Bedroom} classes. Although higher than the other classifiers, the lowest accuracy is still measured for the \itt{Industrial} class.\\
+
+
+% Analyzing the results obtained with the KNN classifiers, it is possible to see
+% that the implementation of the soft assignment techniques has been beneficial.
+% The best performances were obtained with the \itt{PLA}
+% representation and the grid samping method, with an accuracy of
+% $\SI{49.75}{\percent}$ for the 1-NN classifier and $\SI{56.25}{\percent}$ for
+% the k-NN classifier (with $k = 18$). These are a big improvement if compared to
+% the accuracies of the hard assignment methods, for instance with the respective
+% accuracies of $\SI{43.75}{\percent}$ and $\SI{43.95}{\percent}$ obtained with
+% the normalized histograms representation.
+% The results are surely better than the baseline classifier but far from being
+% satisfactory as a lot of confusion between classes is present in the relative
+% confusion matrices (Figures~\ref{fig:confusion-matrix-1nn}
+% and~\ref{fig:confusion-matrix-knn}).\\
+% The results collected with the SVM classifiers have instead been more promising. 
+% Once again, the SVMs trained with the default RBF kernel achieved a top accuracy
+% of $\SI{67}{\percent}$ from grid sampling combined with the \itt{PLA}
+% representation, which marginally beats the $\SI{66.43}{\percent}$ obtained with
+% the normalized histograms.\\
+% The usage of the specialized
+% kernels brought significant improvements only in the normalized histograms and
+% \itt{TF-IDF} representations. 
+% The
+% $\SI{71.42}{\percent}$ accuracy obtained with the $\chi^2$ kernel and the
+% $\SI{70.62}{\percent}$ with the intersection are in fact in agreement with the findings of \itt{Van Gemert et al.}~\cite{gemert} for the hard assignment case.
+% Both metrics were collected using the normalized histograms
+% representation and the grid sampling method. From associated the confusion
+% matrices in figures~\ref{fig:confusion-matrix-chi2}
+% and~\ref{fig:confusion-matrix-intersection} a noticeable (but understandable)
+% confusion arises between the \itt{Open Country} and \itt{Coast} classes as well
+% as between the \itt{Living Room}, \itt{Bedroom}, \itt{Kitchen} classes and
+% \itt{Office} classes. In this case instead, the soft
+% assignment techniques scored surprisingly low, especially the \itt{PLA} method
+% which reached only $\SI{18.22}{\percent}$ accuracy for the $\chi^2$ kernel and
+% $\SI{22.95}{\percent}$ for the intersection kernel on SIFT detected features.\\
+% By a large margin, the best accuracy has been obtained by the SVM classifiers
+% using the spatial pyramid representation. In this case, by sampling features
+% from a regular grid and adopting the \itt{SPM} representation for the images, an
+% accuracy of $\SI{75.54}{\percent}$ has been achieved. This result is
+% significantly better than the other classifiers and is a clear indication that
+% the spatial information is crucial for the scene recognition task. The
+% superiority of this approach is also confirmed by the almost completely diagonal
+% confusion matrix (Figure~\ref{fig:confusion-matrix-pmk}), in which only few of
+% the previous misclassifications remain, mainly between the \itt{Living Room} and \itt{Bedroom} classes. Although higher than the other classifiers, the lowest accuracy is still measured for the \itt{Industrial} class.\\
+% Finally, 
+
+% from Table~\ref{tab:results} we can also notice that all the results
+% obtained using grid sampling as feature extraction method surpass the ones
+% obtained with the SIFT detector. This confirms the idea reported in
+% \itt{Lazebnik et al.}~\cite{lazebnik} and \itt{Fei-Fei and
+% Perona}~\cite{feifei} for which sampling descriptors from a regular grid should
+% intuitively work better from scene classification tasks, as this method allows
+% capturing uniform regions such as sky, calm water, or road surfaces that might
+% be crucial in discriminating between classes.\\
+
+
+
+
+% Old:
+% Finally, from Table~\ref{tab:results} we can also notice that, when the SIFT detector has been adopted as feature extraction method, the performances of the classifiers when using either the normalized histogram or the TF-IDF representation for the input features are very similar. Instead, this has not been the case when the dense grid sampling has been used. In this case, the classifiers have achieved better results using the normalized histograms representation and significantly lower accuracies have been measured when the TF-IDF weighting scheme has been applied. However, such result is not completely unexpected and might be explained by the fact that grid sampling doesn't necessarily guarantee to extract characteristic and significative features from the images as the SIFT detector does. For this reason, the TF-IDF weighting scheme might fail in properly enhancing the importance of the most discriminative visual words in each image.\\
 % NO: This happens expecially with grid keypoints located in uniform regions of the images, such as the sky or sea areas, which might be useful in discriminating between classes as easly stated, but are present in many images and hence weighted less by the TF-IDF scheme.\\
 
-\begin{table}[htb]
+% \begin{table}[htb]
+%   \renewcommand{\arraystretch}{1.5} % Row height
+%   \centering
+%   \begin{tabular}{|c|c|c|c|}
+
+%     % Header (different color)
+%     \hline
+%     \multirow{2}{*}{\textbf{Classifier}} &
+%     \multirow{2}{*}{\textbf{Feature Sampling}} &
+%     \multicolumn{2}{c|}{\textbf{Image Representation}} \\
+%     \cline{3-4}
+%     & & \itt{Histogram} & \itt{TF-IDF} \\
+
+%     % Rows
+%     \hline
+%     \multirow{2}{*}{Dummy Classifier} & 
+%     \itt{SIFT detector} & \SI{10.39}{\percent} & \SI{10.39}{\percent} \\
+%     \cline{2-4}
+%     & \itt{Dense grid} & \SI{10.39}{\percent} & \SI{10.39}{\percent} \\
+%     \hline
+%     \multirow{2}{*}{1-NN} &
+%     \itt{SIFT detector} & \SI{31.49}{\percent} & \SI{31.83}{\percent} \\
+%     \cline{2-4}
+%     & \itt{Dense grid} & \SI{32.36}{\percent} & \SI{23.48}{\percent} \\
+%     \hline
+%     \multirow{2}{*}{k-NN} &
+%     \itt{SIFT detector} & \SI{37.19}{\percent} & \SI{36.42}{\percent} \\
+%     \cline{2-4}
+%     & \itt{Dense grid} & \SI{38.76}{\percent} & \SI{28.31}{\percent} \\
+%     \hline
+%     \multirow{2}{*}{SVM (RBF)} &
+%     \itt{SIFT detector} & \SI{50.65}{\percent} & \SI{50.89}{\percent} \\
+%     \cline{2-4}
+%     & \itt{Dense grid} & \SI{50.08}{\percent} & \SI{42.01}{\percent} \\
+%     \hline
+%     \multirow{2}{*}{SVM ($\chi^2$)} &
+%     \itt{SIFT detector} & \SI{51.49}{\percent} & \SI{50.95}{\percent} \\
+%     \cline{2-4}
+%     & \itt{Dense grid} & \SI{50.12}{\percent} & \SI{42.81}{\percent} \\
+%     \hline
+%     % \itt{SVM (Pyramid Matching Kernel)} & \itt{Dense grid} & \multicolumn{2}{c|}{\SI{75.54}{\percent}} \\
+% 	\makecell{SVM\\ (Pyramid Matching Kernel)} & \itt{Dense grid} &
+% 	\multicolumn{2}{c|}{\SI{75.54}{\percent}} \\
+%     \hline
+
+%   \end{tabular}
+%   \caption{Average accuracies for all the implemented classifiers comparing feature extraction methods and image representations. Notice that the final result for the SVM with the pyramid matching kernel has been obtain by adopting the extended weighted histogram representation as presented in Section~\ref{subsec:spatial-pyramid}.}\label{tab:results}
+%   \renewcommand{\arraystretch}{1} % Reset row height to default
+% \end{table}
+
+% Classifier           |	Representation               |	Detected           |	Grid              
+% ----------------------------------------------------------------------------------------------------
+% Dummy                |	Normalized Histogram         |	10.39%             |	10.39%             
+% Dummy                |	TF-IDF                       |	10.39%             |	10.39%             
+% Dummy                |	Kernel Codebook              |	10.39%             |	10.39%             
+% Dummy                |	Codeword Uncertainty         |	10.39%             |	10.39%             
+% Dummy                |	Codeword Plausibility        |	10.39%             |	10.39%
+% Classifier           |	Representation               |	Detected           |	Grid              
+% ----------------------------------------------------------------------------------------------------
+% 1-NN                 |	Normalized Histogram         |	31.49%             |	43.75%             
+% 1-NN                 |	TF-IDF                       |	31.83%             |	39.30%             
+% 1-NN                 |	Kernel Codebook              |	34.81%             |	42.08%             
+% 1-NN                 |	Codeword Uncertainty         |	31.36%             |	43.79%             
+% 1-NN                 |	Codeword Plausibility        |	37.62%             |	49.75%             
+% ----------------------------------------------------------------------------------------------------
+% k-NN                 |	Normalized Histogram         |	37.19% with k=13   |	43.95% with k=5    
+% k-NN                 |	TF-IDF                       |	36.42% with k=14   |	42.18% with k=8    
+% k-NN                 |	Kernel Codebook              |	41.84% with k=20   |	44.29% with k=7    
+% k-NN                 |	Codeword Uncertainty         |	36.62% with k=13   |	48.81% with k=14   
+% k-NN                 |	Codeword Plausibility        |	42.81% with k=7    |	56.25% with k=18
+% Classifier           |	Representation               |	Detected           |	Grid              
+% ----------------------------------------------------------------------------------------------------
+% SVM (RBF)            |	Normalized Histogram         |	50.65%             |	66.43%             
+% SVM (RBF)            |	TF-IDF                       |	50.89%             |	62.65%             
+% SVM (RBF)            |	Kernel Codebook              |	52.16%             |	58.79%             
+% SVM (RBF)            |	Codeword Uncertainty         |	52.29%             |	59.46%             
+% SVM (RBF)            |	Codeword Plausibility        |	46.47%             |	67.00%             
+% ----------------------------------------------------------------------------------------------------
+% SVM (chi2)           |	Normalized Histogram         |	52.66%             |	71.42%             
+% SVM (chi2)           |	TF-IDF                       |	52.03%             |	70.22%             
+% SVM (chi2)           |	Kernel Codebook              |	44.15%             |	55.11%             
+% SVM (chi2)           |	Codeword Uncertainty         |	50.22%             |	55.38%             
+% SVM (chi2)           |	Codeword Plausibility        |	18.22%             |	41.21%             
+% ----------------------------------------------------------------------------------------------------
+% SVM (intersection)   |	Normalized Histogram         |	50.95%             |	70.62%             
+% SVM (intersection)   |	TF-IDF                       |	50.79%             |	68.91%             
+% SVM (intersection)   |	Kernel Codebook              |	47.20%             |	53.20%             
+% SVM (intersection)   |	Codeword Uncertainty         |	46.97%             |	56.95%             
+% SVM (intersection)   |	Codeword Plausibility        |	22.95%             |	48.58%             
+% ----------------------------------------------------------------------------------------------------
+% SVM (pyramid)        |	Pyramid Histogram            |	 ---               |	75.54%
+
+
+\begin{table}[p]
   \renewcommand{\arraystretch}{1.5} % Row height
   \centering
   \begin{tabular}{|c|c|c|c|}
 
     % Header (different color)
     \hline
+    % \rowcolor{boxcolor}
     \multirow{2}{*}{\textbf{Classifier}} &
-    \multirow{2}{*}{\textbf{Feature Sampling}} &
-    \multicolumn{2}{c|}{\textbf{Image Representation}} \\
+    \multirow{2}{*}{\textbf{Image Representation}} &
+    \multicolumn{2}{c|}{\textbf{Feature Extraction}} \\
     \cline{3-4}
-    & & \itt{Histogram} & \itt{TF-IDF} \\
+    & & \itt{SIFT detector} & \itt{Grid sampling} \\
 
     % Rows
+	\cline{1-4}
     \hline
-    \multirow{2}{*}{Dummy Classifier} & 
-    \itt{SIFT detector} & \SI{10.39}{\percent} & \SI{10.39}{\percent} \\
-    \cline{2-4}
-    & \itt{Dense grid} & \SI{10.39}{\percent} & \SI{10.39}{\percent} \\
-    \hline
-    \multirow{2}{*}{1-NN} &
-    \itt{SIFT detector} & \SI{31.49}{\percent} & \SI{31.83}{\percent} \\
-    \cline{2-4}
-    & \itt{Dense grid} & \SI{32.36}{\percent} & \SI{23.48}{\percent} \\
-    \hline
-    \multirow{2}{*}{k-NN} &
-    \itt{SIFT detector} & \SI{37.19}{\percent} & \SI{36.42}{\percent} \\
-    \cline{2-4}
-    & \itt{Dense grid} & \SI{38.76}{\percent} & \SI{28.31}{\percent} \\
-    \hline
-    \multirow{2}{*}{SVM (RBF)} &
-    \itt{SIFT detector} & \SI{50.65}{\percent} & \SI{50.89}{\percent} \\
-    \cline{2-4}
-    & \itt{Dense grid} & \SI{50.08}{\percent} & \SI{42.01}{\percent} \\
-    \hline
-    \multirow{2}{*}{SVM ($\chi^2$)} &
-    \itt{SIFT detector} & \SI{51.49}{\percent} & \SI{50.95}{\percent} \\
-    \cline{2-4}
-    & \itt{Dense grid} & \SI{50.12}{\percent} & \SI{42.81}{\percent} \\
-    \hline
-    \itt{SVM (Pyramid Matching Kernel)} & \itt{Dense grid} & \multicolumn{2}{c|}{\SI{75.54}{\percent}} \\
-    \hline
+		\multirow{5}{*}{Dummy Classifier} & 
+		\itt{HIST} & \SI{10.39}{\percent} & \SI{10.39}{\percent} \\
+		\cline{2-4}
+		& \itt{TF-IDF} & \SI{10.39}{\percent} & \SI{10.39}{\percent} \\
+		\cline{2-4}
+		& \itt{KCB} & \SI{10.39}{\percent} & \SI{10.39}{\percent} \\
+		\cline{2-4}
+		& \itt{UNC} & \SI{10.39}{\percent} & \SI{10.39}{\percent} \\
+		\cline{2-4}
+		& \itt{PLA} & \SI{10.39}{\percent} & \SI{10.39}{\percent} \\
+	\cline{1-4}
+	\hline
+		\multirow{5}{*}{1-NN} &
+		\itt{HIST} & \SI{31.49}{\percent} & \SI{43.75}{\percent} \\
+		\cline{2-4}
+		& \itt{TF-IDF} & \SI{31.83}{\percent} & \SI{39.30}{\percent} \\
+		\cline{2-4}
+		& \itt{KCB} & \SI{34.81}{\percent} & \SI{42.08}{\percent} \\
+		\cline{2-4}
+		& \itt{UNC} & \SI{31.36}{\percent} & \SI{43.79}{\percent} \\
+		\cline{2-4}
+		& \itt{PLA} & \SI{37.62}{\percent} & \SI{49.75}{\percent} \\
+	\cline{1-4}
+	\hline
+		\multirow{5}{*}{k-NN} &
+		\itt{HIST} & \SI{37.19}{\percent} & \SI{43.95}{\percent} \\
+		\cline{2-4}
+		& \itt{TF-IDF} & \SI{36.42}{\percent} & \SI{42.18}{\percent} \\
+		\cline{2-4}
+		& \itt{KCB} & \SI{41.84}{\percent} & \SI{44.29}{\percent} \\
+		\cline{2-4}
+		& \itt{UNC} & \SI{36.62}{\percent} & \SI{48.81}{\percent} \\
+		\cline{2-4}
+		& \itt{PLA} & \SI{42.81}{\percent} & \SI{56.25}{\percent} \\
+	\cline{1-4}
+	\hline
+		\multirow{5}{*}{SVM (RBF)} &
+		\itt{HIST} & \SI{50.65}{\percent} & \SI{66.43}{\percent} \\
+		\cline{2-4}
+		& \itt{TF-IDF} & \SI{50.89}{\percent} & \SI{62.65}{\percent} \\
+		\cline{2-4}
+		& \itt{KCB} & \SI{52.16}{\percent} & \SI{58.79}{\percent} \\
+		\cline{2-4}
+		& \itt{UNC} & \SI{52.29}{\percent} & \SI{59.46}{\percent} \\
+		\cline{2-4}
+		& \itt{PLA} & \SI{46.47}{\percent} & \SI{67.00}{\percent} \\
+	\cline{1-4}
+	\hline
+		\multirow{5}{*}{SVM ($\chi^2$)} &
+		\itt{HIST} & \SI{52.66}{\percent} & \SI{71.42}{\percent} \\
+		\cline{2-4}
+		& \itt{TF-IDF} & \SI{52.03}{\percent} & \SI{70.22}{\percent} \\
+		\cline{2-4}
+		& \itt{KCB} & \SI{44.15}{\percent} & \SI{55.11}{\percent} \\
+		\cline{2-4}
+		& \itt{UNC} & \SI{50.22}{\percent} & \SI{55.38}{\percent} \\
+		\cline{2-4}
+		& \itt{PLA} & \SI{18.22}{\percent} & \SI{41.21}{\percent} \\
+	\cline{1-4}
+	\hline
+		\multirow{5}{*}{SVM ($\cap$)} &
+		\itt{HIST} & \SI{50.95}{\percent} & \SI{70.62}{\percent} \\
+		\cline{2-4}
+		& \itt{TF-IDF} & \SI{50.79}{\percent} & \SI{68.91}{\percent} \\
+		\cline{2-4}
+		& \itt{KCB} & \SI{47.20}{\percent} & \SI{53.20}{\percent} \\
+		\cline{2-4}
+		& \itt{UNC} & \SI{46.97}{\percent} & \SI{56.95}{\percent} \\
+		\cline{2-4}
+		& \itt{PLA} & \SI{22.95}{\percent} & \SI{48.58}{\percent} \\
+	\cline{1-4}
+	\hline
+		\makecell{SVM\\ (\itt{Spatial Pyramid})} & \itt{SPM} & --- & \SI{75.54}{\percent} \\
+	\cline{1-4}
+	\hline
 
   \end{tabular}
-  \caption{Average accuracies for all the implemented classifiers comparing feature extraction methods and image representations. Notice that the final result for the SVM with the pyramid matching kernel has been obtain by adopting the extended weighted histogram representation as presented in Section~\ref{subsec:spatial-pyramid}.}\label{tab:results}
+  \caption{Average accuracies for all the implemented classifiers comparing feature extraction methods and image representations.}\label{tab:results}
   \renewcommand{\arraystretch}{1} % Reset row height to default
 \end{table}
 
-
-
 \end{document}
-

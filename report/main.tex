@@ -8,6 +8,7 @@
 % Additional packages here
 \usepackage{blindtext}
 \usepackage{siunitx}
+\usepackage{makecell}
 
 % Subfiles package (best loaded last in the preamble)
 \usepackage{subfiles}
@@ -37,9 +38,11 @@
 \begin{abstract}
 \noindent
 This report presents the implementation of a Bag of Visual Words (BoW) image classifier.
-The objective is to build a classifier for scene recognition by building a visual vocabulary from a set of images, representing them as normalized histograms of visual words, and performing multi-class classification.
-The visual vocabuilary is built by clustering SIFT descriptors extracted from the images, and the classification is performed comparing K-Nearest Neighbors (KNN) and Support Vector Machines (SVM) classifiers.
-Different kernels have been tested for the SVM classifier, including radial basis function (RBF), $\chi^2$ kernel and pyramid match kernel.
+The objective is to build a classifier for scene recognition by building a
+visual vocabulary from a set of images and performing multi-class classification.
+The visual vocabulary is built by clustering SIFT descriptors extracted from the
+images, and classification is performed comparing K-Nearest Neighbors (KNN)
+and Support Vector Machines (SVM) classifiers with different kernels.
 Results show that the best performance is achieved by the SVM classifiers, in particular when implemented with a spatial pyramid feature representation to add spatial information to the classic BoW approach.
 \end{abstract}
 

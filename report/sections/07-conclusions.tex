@@ -5,13 +5,34 @@
 
 \section{Conclusions}\label{sec:conclusions}
 
-In conclusion, this study has shown the implementation of a Bag of Visual Words (BoW) classifier for the scene recognition task from the construction of a visual vocabulary by perfoming clustering on SIFT descriptors to the classification of images using classic machine learning technques as K-Nearest Neighbors (KNN) and Support Vector Machines (SVM).\\
-From the results obtained, it clearly emerges that the SVM classifiers have outperformed the KNN classifiers in terms of accuracy, but the latter at least surpassed the dummy classifier performance used as baseline.\\
-The usage of the specialized $\chi^2$ kernel for the SVM classifiers has also shown to be marginally beneficial with respect to the default RBF kernel, even if the performace difference is not significant.\\
-Moreover, from the results no significant differece emerges between the usage of the normalized histograms or the TF-IDF representation for the input features when the SIFT detector has been used for feature extraction. Instead, an overall decrease in performace has been observed when using a combination of dense grid sampling and TF-IDF representation.\\ 
-Ultimately, the best accuracy has been achieved by the SVM classifiers using the spatial pyramid approach proposed by \itt{Lazebnik et al}.
-Altough the final accuracy of $\SI{75.54}{\percent}$ doesn't quite match the one obtained by the authors of the original paper, the results are by far better than the other classifiers and this confirms the importance of adding spatial information to the classic BoW approach for the scene recognition task.
-The main differences in the results of this study from the ones obtined by \itt{Lazebnik et al.} might be due either to the placement of the sampling grid of keypoints in the images or to the custering parameters used to build the visual vocabulary (e.g.\ the size of the random sample used or the features selected for clustering). Nevertheless, the results obtained are still satisfactory and confirm the validity of the BoW approach for the scene recognition task.
+In conclusion, this study has shown the implementation of a Bag of Visual Words
+(BoW) classifier for scene recognition from the construction of a visual
+vocabulary by performing clustering on SIFT descriptors to the classification of
+images using machine learning techniques such as K-Nearest Neighbors (KNN) and Support Vector Machines (SVM).\\
+From the results, it emerges that the SVMs have clearly outperformed the KNN
+classifiers in terms of accuracy, but the latter at least surpassed the dummy
+classifier performance used as baseline. In particular, the usage of specialized
+kernels for the SVM classifiers has also shown to be beneficial with respect to the default RBF kernel.\\
+Concerning the worse results recorded for the soft assignment approach, these
+might be explained the different steps taken in this study with respect to the
+original paper. Specifically, in this work, \itt{k-means} clustering has been
+used instead of the \itt{radius based} clustering implemented by the original
+authors. Moreover, \itt{Van Gemert et al.}~\cite{gemert} conducted $k$-fold
+cross-validation on the training set to find the optimal value of the $\sigma$,
+while in this study the value has been set to $\sigma = 200$ based on the
+results of the paper due to computational and time constraints. Additionally,
+the authors also performed clustering on a random subset of the extracted
+descriptors, but it's possible that the difference in the subset size and in
+representative sampled descriptors might have led to different results.\\
+Ultimately, the best accuracy has been achieved by the SVM classifiers using the
+spatial pyramid approach proposed by \itt{Lazebnik et al}.~\cite{lazebnik}.
+Although the final accuracy of $\SI{75.54}{\percent}$ doesn't quite match the
+one obtained by the authors of the original paper, the results are by far better
+than the other classifiers and this confirms the importance of adding spatial
+information to the classic BoW approach. Also in this case, the slight
+differences in the final results might be due to the different parameters used
+in the clustering process.
+Nevertheless, the results obtained are still satisfactory and confirm the validity of the BoW approach for the scene recognition task.
 
 \end{document}
 
