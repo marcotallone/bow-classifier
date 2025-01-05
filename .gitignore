@@ -1,6 +1,9 @@
 # Ignore all
 *
 
+# Ignore picked files
+*.pkl
+
 # # Ignore all contents inside the datasets directory
 # datasets/*
 
