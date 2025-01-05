@@ -7,6 +7,7 @@ import scipy as sp
 import sklearn as sk
 import tqdm.notebook as tqdm
 import cv2
+import pickle
 
 # Ploting
 from matplotlib import pyplot as plt
@@ -540,7 +541,7 @@ def tfidf(images, sift, kmeans, grid=False, spacing=8):
 	return np.array(tfidf_representation)
 
 # Kernel codebook representation
-def kcb(images, sift, kmeans, grid=False, spacing=8, sigma=100):
+def kcb(images, sift, kmeans, grid=False, spacing=8, sigma=200):
 
 	# Initialize variables
 	kcb_representation = []
@@ -573,7 +574,7 @@ def kcb(images, sift, kmeans, grid=False, spacing=8, sigma=100):
 	return np.array(kcb_representation)
 
 # Codeword uncertainty representation
-def unc(images, sift, kmeans, grid=False, spacing=8, sigma=100):
+def unc(images, sift, kmeans, grid=False, spacing=8, sigma=200):
 
 	# Initialize variables
 	unc_representation = []
