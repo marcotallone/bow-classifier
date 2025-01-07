@@ -75,12 +75,41 @@ representation is the normalized histograms of visual words (\itt{HIST}). This h
   \caption{Confusion matrix for the SVM classifier with histogram intersection kernel.}\label{fig:confusion-matrix-intersection}
 \end{figure}
 
+\FloatBarrier
+
 \begin{figure}[htb]
   \centering
   \includegraphics[width=0.8\textwidth]{svm_pyramid_confusion_matrix.pdf}
   \caption{Confusion matrix for the SVM classifier with spatial pyramid matching
   approach.}\label{fig:confusion-matrix-pmk}
 \end{figure}
+
+
+\subsection{Notice on Generative Tools Usage}\label{app:generative-tools}
+
+Generative AI tools have been used as a support for the development of this
+project. In particular, the
+\href{https://en.wikipedia.org/wiki/Microsoft_Copilot}{Copilot \faLink} generative tool
+based on \href{https://en.wikipedia.org/wiki/GPT-4}{OpenAI GPT 4o \faLink} model has
+been used as assistance medium in performing the following tasks:
+
+\begin{itemize}
+	 \item writing documentation and comments in implemented functions by
+		 adhering to the
+		 \href{https://numpydoc.readthedocs.io/en/latest/format.html}{NumPy
+		 Style Guide \faLink}
+
+	\item improving variable naming and code readability 
+	
+	\item minor bug fixing in implemented functions
+
+	\item grammar and spelling check both in the repository
+		\ttt{README}~\cite{github} and in the report
+
+	\item tweaking aesthetic improvements in the plots of this report
+
+	\item formatting table of results in this report
+\end{itemize}
 
 \end{document}
 

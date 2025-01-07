@@ -13,17 +13,21 @@ From the results, it emerges that the SVMs have clearly outperformed the KNN
 classifiers in terms of accuracy, but the latter at least surpassed the dummy
 classifier performance used as baseline. In particular, the usage of specialized
 kernels for the SVM classifiers has also shown to be beneficial with respect to the default RBF kernel.\\
-Concerning the worse results recorded for the soft assignment approach, these
-might be explained the different steps taken in this study with respect to the
-original paper. Specifically, in this work, \itt{k-means} clustering has been
+Concerning the worse results recorded for the soft assignment techniques, these
+might be explained the different approach used in this study with respect to the
+original paper. Specifically, since \itt{k-means} has been
 used instead of the \itt{radius based} clustering implemented by the original
-authors. Moreover, \itt{Van Gemert et al.}~\cite{gemert} conducted $k$-fold
+authors, it's possible that the approximation used to define the region around
+each centroid might have led to worse results.
+Moreover, \itt{Van Gemert et al.}~\cite{gemert} conducted $k$-fold
 cross-validation on the training set to find the optimal value of the $\sigma$,
 while in this study the value has been set to $\sigma = 200$ based on the
-results of the paper due to computational and time constraints. Additionally,
+results of the paper due to computational and time constraints. Additionally, as
+done in this study,
 the authors also performed clustering on a random subset of the extracted
-descriptors, but it's possible that the difference in the subset size and in
-representative sampled descriptors might have led to different results.\\
+descriptors, but it's possible that the differences in the subset size and in
+the
+representativeness of the sampled descriptors might have led to different results.\\
 Ultimately, the best accuracy has been achieved by the SVM classifiers using the
 spatial pyramid approach proposed by \itt{Lazebnik et al}.~\cite{lazebnik}.
 Although the final accuracy of $\SI{75.54}{\percent}$ doesn't quite match the
