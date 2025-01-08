@@ -26,10 +26,9 @@
     <br />
     <table>
       <tr>
-        <td><a
-href="https://marcotallone.github.io/bow-classifier/report/main.pdf"><strong>Report</strong></a></td>
-        <td><a href="https://github.com/marcotallone/bow-classifier/notebooks/bow-classifier.ipynb"><strong>Python Notebook</strong></a></td>
-        <td><a href="https://github.com/marcotallone/bow-classifier/notebooks/bow-classifier.html"><strong>Rendered Notebook</strong></a></td>
+        <td><a href="./report/main.pdf"><strong>Report</strong></a></td>
+        <td><a href="./notebooks/bow-classifier.ipynb"><strong>Python Notebook</strong></a></td>
+        <td><a href="./notebooks/bow-classifier.html"><strong>Rendered Notebook</strong></a></td>
       </tr>
     </table>
 </div>
