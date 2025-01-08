@@ -20,19 +20,26 @@ used instead of the \itt{radius based} clustering implemented by the original
 authors, it's possible that the approximation used to define the region around
 each centroid might have led to worse results.
 Moreover, \itt{Van Gemert et al.}~\cite{gemert} conducted $k$-fold
-cross-validation on the training set to find the optimal value of the $\sigma$,
+cross-validation on the training set to find the optimal value of $\sigma$
+for the Gaussian kernel,
 while in this study the value has been set to $\sigma = 200$ based on the
 results of the paper due to computational and time constraints. Additionally, as
 done in this study,
 the authors also performed clustering on a random subset of the extracted
 descriptors, but it's possible that the differences in the subset size and in
 the
-representativeness of the sampled descriptors might have led to different results.\\
+representativeness of the sampled descriptors might have led to different
+results.\\
+An improvement and further extension of this project could in fact be to repeat
+the random sampling and clustering multiple times with different random seeds in order to collect significant statistics
+about the performance of all the techniques and hence perform a more robust
+comparison.\\
 Ultimately, the best accuracy has been achieved by the SVM classifiers using the
 spatial pyramid approach proposed by \itt{Lazebnik et al}.~\cite{lazebnik}.
 Although the final accuracy of $\SI{75.54}{\percent}$ doesn't quite match the
-one obtained by the authors of the original paper, the results are by far better
-than the other classifiers and this confirms the importance of adding spatial
+one obtained by the authors of the original paper, in this case the results are
+satisfactory since they are, by a good margin, better than the ones of the other
+classifiers. This confirms the importance of adding spatial
 information to the classic BoW approach. Also in this case, the slight
 differences in the final results might be due to the different parameters used
 in the clustering process.

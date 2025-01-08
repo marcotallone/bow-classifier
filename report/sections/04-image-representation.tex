@@ -88,13 +88,14 @@ $n_{d}$ descriptors in the image, but only over the $n_{ri}$ descriptors in the
 region around the $i$-th visual word. 
 In the original paper, in fact, the authors employed \itt{radius based} clustering to construct the visual vocabulary. 
 Since in this study \itt{k-means} has been used, an approximation of each
-cluster radius has been obtained as the maximal distance\footnote{In Euclidean
-norm} between the cluster centroid and the descriptors assigned to it. The
+cluster radius has been obtained as the distance\footnote{In Euclidean
+norm} between the cluster centroid and the furthest descriptor assigned to it. The
 region around each visual word is hence defined as the set of descriptors whose
 distance from the centroid is less than the corresponding radius. Such
 definition possibly implies overlapping regions, meaning that a descriptor can
-belong to more than one region, and empirically led to better
-results than including all the descriptors in the image in the computation.
+belong to more than one region and hence contribute to more than one histogram
+bin. Empirically, this led to better
+results than including all the descriptors of the image in the computation.
 
 \begin{figure}[htb]
   \centering
@@ -137,7 +138,7 @@ image, a single \itt{extended multi-level descriptor}
 % encodes positional information at different scales which was missing in the
 % standard BoW approach.\\
 that encodes both visual words and positional information at different
-scales and can be used as input to SVM classifiers.
+resolutions and can be used as input to SVM classifiers.
 The idea of using SVM classifiers specifically for this representation comes
 from the possibility of adopting the \itt{spatial pyramid kernel} in order to
 compute the similarity between these extended descriptors by correctly measuring
