@@ -205,7 +205,7 @@ Distributed under the MIT License. See [`LICENSE`](./LICENSE) for more informati
 [5] P. J. Rousseeuw, *"Silhouettes: A graphical aid to the interpretation and validation of cluster analysis"*, Journal of Computational and Applied Mathematics, Volume 20, 1987, Pages 53-65, [https://doi.org/10.1016/0377-0427(87)90125-7](https://www.sciencedirect.com/science/article/pii/0377042787901257)
 
 <a id="ref6"></a>
-[6] D. M. Blei, A. Y. Ng, M. I. Jordan, *"Latent Dirichlet Allocation"*, Journal of Machine Learning Research, Volume 3, 2003, Pages 993-1022, [https://doi.org/10.1162/jmlr.2003.3.4-5.993](https://www.jmlr.org/papers/volume3/blei03a/blei03a.pdf)
+[6] F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, P. Prettenhofer, R. Weiss, V. Dubourg, J. Vanderplas, A. Passos, D. Cournapeau, M. Brucher, M. Perrot, E. Duchesnay, *"Scikit-learn: Machine learning in Python"*, Journal of Machine Learning Research, Volume 12, 2011, Pages 2825-2830, [https://www.jmlr.org/papers/volume12/pedregosa11a/pedregosa11a.pdf](https://www.jmlr.org/papers/volume12/pedregosa11a/pedregosa11a.pdf)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
