@@ -5,10 +5,12 @@
 
 \section{Results}\label{sec:results}
 
-The results obtained with all the classifiers, the two feature extraction methods and the different image representations are summarized in Table~\ref{tab:results}.
+The results obtained with all the classifiers, the two feature extraction
+methods and the different image representations are summarized in
+Table~\ref{tab:results} while Figure~\ref{fig:classifiers-comparison} compares
+the aresults for the grid sampling method.\\
 The average accuracy over all the classes has been used as the main assessment
 metric for all the models. 
-% However, confusion matrices have also been computed\footnote{Only dense grid sampling and \itt{HIST} representation for reasons explained in Appendix~\ref{app:confusion-matrices}.} in order to better understand which classes are more difficult to classify and these are reported in Appendix~\ref{app:confusion-matrices}.\\
 All the experimental results have been obtained by running the models on a machine equipped with an Intel\textsuperscript{\textregistered}~Core\textsuperscript{TM}~i7--8565U CPU @ $\SI{4.60}{\giga\hertz}$ and $\SI{8}{\giga\byte}$ of RAM.\\
 The dummy classifier, that always predicts the most frequent class  (\itt{OpenCountry}) on the test set, has been used as baseline for comparison
 for the other models and the average accuracy it achieved is $\SI{10.39}{\percent}$.\\
@@ -157,5 +159,11 @@ accuracy is still measured for the \itt{Industrial} class.\\
   \caption{Average accuracies for all the implemented classifiers comparing feature extraction methods and image representations.}\label{tab:results}
   \renewcommand{\arraystretch}{1} % Reset row height to default
 \end{table}
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{classifiers_accuracy.pdf}
+  \caption{Comparison of the classifiers accuracies using grid sampling.}\label{fig:classifiers-comparison}
+\end{figure}
 
 \end{document}
